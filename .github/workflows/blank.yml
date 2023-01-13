@@ -1,0 +1,68 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Image
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  #push:
+  #  branches: [ "main" ]
+  #pull_request:
+  #  branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@main
+
+      - name: install dependencies
+        run: |
+          sudo apt install build-essential clang flex g++ gawk gcc-multilib gettext \
+          git libncurses5-dev libssl-dev python3-distutils rsync unzip zlib1g-dev \
+          file wget
+      - name: clone & checkout repo
+        run: |
+          git clone https://github.com/openwrt/openwrt.git
+          cd ./openwrt
+          git checkout v22.03.3
+      - name: update all feeds
+        run: |
+          cd ./openwrt
+          ./scripts/feeds update -a
+      - name: install all feeds
+        run: |
+          cd ./openwrt
+          ./scripts/feeds install -a
+      - name: make configuration
+        run: cp .config ./openwrt
+
+      - name: download packages
+        run: |
+          cd ./openwrt
+          make download
+      - name: build firmware
+        run: |
+          cd ./openwrt
+          # make V=99
+          make
+
+      - name: download upload tool
+        run: |
+          mkdir tools
+          cd tools
+          curl -fsSL https://github.com/Mikubill/transfer/releases/download/v0.4.17/transfer_0.4.17_linux_amd64.tar.gz -o transfer.tar.gz
+          tar -xzf transfer.tar.gz
+
+      - name: upload firmware to wetransfer
+        run: |
+          cd tools
+          ./transfer wet -s --no-progress ../openwrt/bin/targets/bcm27xx/bcm2708/openwrt-bcm27xx-bcm2708-rpi-ext4-factory.img.gz
