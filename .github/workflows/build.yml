@@ -27,6 +27,10 @@ jobs:
       - name: update
         run: |
           sudo apt-get update
+  
+      - name: print os version
+        run: |
+          cat /etc/lsb-release
 
       - name: install dependencies
         run: |
