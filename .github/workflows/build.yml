@@ -41,7 +41,7 @@ jobs:
         run: |
           git clone https://github.com/openwrt/openwrt.git
           cd ./openwrt
-          git checkout v22.03.3
+          git checkout v22.03.4
       - name: update all feeds
         run: |
           cd ./openwrt
