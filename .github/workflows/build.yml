@@ -73,4 +73,4 @@ jobs:
       - name: upload firmware to wetransfer
         run: |
           cd tools
-          ./transfer wet -s --no-progress ../openwrt/bin/targets/bcm27xx/bcm2708/openwrt-bcm27xx-bcm2708-rpi-ext4-factory.img.gz
+          ./transfer muse --no-progress ../openwrt/bin/targets/bcm27xx/bcm2708/openwrt-bcm27xx-bcm2708-rpi-ext4-factory.img.gz
