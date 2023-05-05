@@ -63,14 +63,20 @@ jobs:
           # make V=99
           make
 
-      - name: download upload tool
-        run: |
-          mkdir tools
-          cd tools
-          curl -fsSL https://github.com/Mikubill/transfer/releases/download/v0.4.17/transfer_0.4.17_linux_amd64.tar.gz -o transfer.tar.gz
-          tar -xzf transfer.tar.gz
+      - name: upload artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: openwrt-images
+          path: ./bin
 
-      - name: upload firmware to wetransfer
-        run: |
-          cd tools
-          ./transfer muse --no-progress ../openwrt/bin/targets/bcm27xx/bcm2708/openwrt-bcm27xx-bcm2708-rpi-ext4-factory.img.gz
+      # - name: download upload tool
+      #   run: |
+      #     mkdir tools
+      #     cd tools
+      #     curl -fsSL https://github.com/Mikubill/transfer/releases/download/v0.4.17/transfer_0.4.17_linux_amd64.tar.gz -o transfer.tar.gz
+      #     tar -xzf transfer.tar.gz
+
+      # - name: upload firmware to wetransfer
+      #   run: |
+      #     cd tools
+      #     ./transfer muse --no-progress ../openwrt/bin/targets/bcm27xx/bcm2708/openwrt-bcm27xx-bcm2708-rpi-ext4-factory.img.gz
