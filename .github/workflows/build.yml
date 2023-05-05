@@ -67,7 +67,7 @@ jobs:
         uses: actions/upload-artifact@master
         with:
           name: openwrt-images
-          path: ./bin
+          path: ./openwrt/bin
 
       # - name: download upload tool
       #   run: |
